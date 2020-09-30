@@ -16,6 +16,8 @@ public class TweetApiClient extends RestAPI {
     private final String USER_TIMELINE="statuses/user_timeline.json";
     private final String RETWEET_ENDPOINT = "/statuses/retweet/:id.json";
 
+    private final String DESTROYTWEET= "/statuses/destroy/:1311423670716444674.json";
+
     public ValidatableResponse createTweet(String tweet)  {
         return given().auth().oauth(this.apiKey, this.apiSecretKey, this.accessToken, this.accessTokenSecret)
                 .param("status", tweet)
@@ -42,10 +44,19 @@ public class TweetApiClient extends RestAPI {
                 .when().get(this.baseUrl +USER_TIMELINE)
                 .then();
     }
+
     public ValidatableResponse retweet(Long tweetId){
         return given().auth().oauth(this.apiKey, this.apiSecretKey, this.accessToken, this.accessTokenSecret)
                 .param("id",tweetId)
-                .when().get(this.baseUrl +RETWEET_ENDPOINT)
+                .when().post(this.baseUrl +RETWEET_ENDPOINT)
                 .then();
     }
+
+    public ValidatableResponse destroyTweet(long tweetDel){
+        return given().auth().oauth(this.apiKey, this.apiSecretKey, this.accessToken, this.accessTokenSecret)
+                .queryParam("id",tweetDel)
+                .when().post(this.baseUrl +DESTROYTWEET)
+                .then();
+    }
+
 }
